@@ -28,17 +28,7 @@ function init {
 		# TODO: Check for declared version and if version changes re-install.
 
 		BASE_PATH="$GIT_CACHE_DIR/github.com/c9/core"
-		
-		NODEJS_VERSION="4"
 		COMMIT_REF="c8163f99fba48a8ca4f963ac06303a82b1f64318"
-
-
-		BO_log "$VERBOSE" "Activating NodeJS version '$NODEJS_VERSION' ..."
-		BO_ensure_nvm
-		if ! nvm use $NODEJS_VERSION; then
-        	nvm install $NODEJS_VERSION
-		fi
-
 
 		if [ ! -e "$BASE_PATH" ]; then
 			if [ ! -e "$(dirname $BASE_PATH)" ]; then
