@@ -10,6 +10,8 @@ function init {
 	BO_deriveSelfDir ___TMP___ "$BO_SELF_BASH_SOURCE"
 	local __BO_DIR__="$___TMP___"
 
+	C9_EDIT_CORE_BASE_PATH="$__BO_DIR__"
+
 
 	if [ -z "$GIT_CACHE_DIR" ]; then
 	    echo "ERROR: 'GIT_CACHE_DIR' environment variable not set!"
@@ -40,11 +42,11 @@ function init {
 			ln -s "$2" "$PLUGIN_BASE_PATH/$1"
 
 			# TODO: Remove once implemented: https://github.com/c9/core/issues/172
-			if [ ! -e "$HOME/$PLUGIN_BASE_PATH" ]; then
-				mkdir -p "$HOME/$PLUGIN_BASE_PATH"
-			fi
-			rm -Rf "$HOME/$PLUGIN_BASE_PATH/$1" > /dev/null || true
-			ln -s "$2" "$HOME/$PLUGIN_BASE_PATH/$1"
+#			if [ ! -e "$HOME/$PLUGIN_BASE_PATH" ]; then
+#				mkdir -p "$HOME/$PLUGIN_BASE_PATH"
+#			fi
+#			rm -Rf "$HOME/$PLUGIN_BASE_PATH/$1" > /dev/null || true
+#			ln -s "$2" "$HOME/$PLUGIN_BASE_PATH/$1"
 
 		popd > /dev/null
 
@@ -61,7 +63,7 @@ function init {
 		SETTINGS_PATH=".c9/project.settings"
 
 		node --eval '
-			const FS = require("fs");
+			const FS = require("'$C9_EDIT_CORE_BASE_PATH'/node_modules/fs-extra");
 			var config = JSON.parse(FS.readFileSync("'$SETTINGS_PATH'"));
 			var pluginName = "'$1'";
 			var key = "'$2'";
@@ -70,7 +72,7 @@ function init {
 				config[pluginName] = {};
 			}
 			config[pluginName][key] = value;
-			FS.writeFileSync("'$SETTINGS_PATH'", JSON.stringify(config, null, 4));
+			FS.outputFileSync("'$SETTINGS_PATH'", JSON.stringify(config, null, 4));
 		'
 
 		BO_format "$VERBOSE" "FOOTER"
@@ -81,21 +83,22 @@ function init {
 
 		# TODO: Check for declared version and if version changes re-install.
 
-		BASE_PATH="$GIT_CACHE_DIR/github.com/c9/core"
-		COMMIT_REF="c8163f99fba48a8ca4f963ac06303a82b1f64318"
+		BASE_PATH="$GIT_CACHE_DIR/github.com/cadorn/core"
+		CLONE_URL="git://github.com/cadorn/core.git"
+		COMMIT_REF="536cf9d9f1e699b595dd463a2f631c2807d188d2"
 
 		if [ ! -e "$BASE_PATH" ]; then
 			if [ ! -e "$(dirname $BASE_PATH)" ]; then
 				mkdir -p "$(dirname $BASE_PATH)"
 			fi
-			BO_log "$VERBOSE" "Cloning from 'git@github.com:c9/core.git' ..."
-			git clone git@github.com:c9/core.git "$BASE_PATH"
+			BO_log "$VERBOSE" "Cloning from '$CLONE_URL' ..."
+			git clone $CLONE_URL "$BASE_PATH"
 			pushd "$BASE_PATH" > /dev/null
 
-    			BO_log "$VERBOSE" "Checking out commit '$COMMIT_REF' ..."
-			    git checkout $COMMIT_REF
-#				git checkout 18aff20ea4ebb33565f128123cc5d2b91cff217d
-#				git checkout 0b30b4efece00ab9f6292e34793bd2271256fbcc
+				if [ ! -z "$COMMIT_REF" ]; then
+					BO_log "$VERBOSE" "Checking out commit '$COMMIT_REF' ..."
+				    git checkout $COMMIT_REF
+				fi
 
     			BO_log "$VERBOSE" "Installing at '$BASE_PATH' ..."
 				scripts/install-sdk.sh
