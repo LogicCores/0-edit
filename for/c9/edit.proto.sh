@@ -58,13 +58,16 @@ function init {
 
 		BO_log "$VERBOSE" "Plugin Name: $1"
 		BO_log "$VERBOSE" "Settings key: $2"
-		BO_log "$VERBOSE" "Settings value: $2"
+		BO_log "$VERBOSE" "Settings value: $3"
 
 		SETTINGS_PATH=".c9/project.settings"
 
 		node --eval '
 			const FS = require("'$C9_EDIT_CORE_BASE_PATH'/node_modules/fs-extra");
-			var config = JSON.parse(FS.readFileSync("'$SETTINGS_PATH'"));
+			var config = {};
+			if (FS.existsSync("'$SETTINGS_PATH'")) {
+				config = JSON.parse(FS.readFileSync("'$SETTINGS_PATH'"));
+			}
 			var pluginName = "'$1'";
 			var key = "'$2'";
 			var value = "'$3'";
