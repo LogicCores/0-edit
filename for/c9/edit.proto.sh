@@ -114,7 +114,12 @@ function init {
 			# TODO: Detect if already open in browser and don't open again if so
 			(sleep 1 && open "http://127.0.0.1:$EDITOR_PORT")&
 
-			node server.js --port $EDITOR_PORT -w "$WORKSPACE_DIR"
+			_WS_PATH="$WORKSPACE_DIR"
+
+			# NOTE: We reset the 'WORKSPACE_DIR' so that it is determined based on the current path in the c9 terminal.
+			export WORKSPACE_DIR=""
+
+			node server.js --port $EDITOR_PORT -w "$_WS_PATH"
 		popd > /dev/null
 
 		BO_format "$VERBOSE" "FOOTER"
