@@ -116,8 +116,11 @@ function init {
 
 			_WS_PATH="$WORKSPACE_DIR"
 
-			# NOTE: We reset the 'WORKSPACE_DIR' so that it is determined based on the current path in the c9 terminal.
+			# NOTE: We reset some variables so that they are determined based on the current path in the c9 terminal.
 			export WORKSPACE_DIR=""
+			export Z0_ROOT=""
+			export BOOT_CONFIG_PATH=""
+			export PORT=""
 
 			node server.js --port $EDITOR_PORT -w "$_WS_PATH"
 		popd > /dev/null
