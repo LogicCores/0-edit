@@ -117,10 +117,18 @@ function init {
 			_WS_PATH="$WORKSPACE_DIR"
 
 			# NOTE: We reset some variables so that they are determined based on the current path in the c9 terminal.
+			# NOTE: All these should be prefixed with "Z0_" so we can easily reset them all.
 			export WORKSPACE_DIR=""
 			export Z0_ROOT=""
 			export BOOT_CONFIG_PATH=""
 			export PORT=""
+			export ENVIRONMENT_NAME=""
+			export ENVIRONMENT_TYPE=""
+			export PLATFORM_NAME=""
+			export NODEJS_VERSION=""
+			export PIO_PROFILE_SEED_PATH=""
+			export PIO_PROFILE_KEY=""
+			export PIO_PROFILE_SECRET=""
 
 			node server.js --port $EDITOR_PORT -w "$_WS_PATH"
 		popd > /dev/null
