@@ -13,9 +13,6 @@ function init {
 	C9_EDIT_CORE_BASE_PATH="$__BO_DIR__"
 
 
-	if [ -z "$GIT_CACHE_DIR" ]; then
-	    echo "ERROR: 'GIT_CACHE_DIR' environment variable not set!"
-	fi
 	if [ -z "$WORKSPACE_DIR" ]; then
 	    echo "ERROR: 'WORKSPACE_DIR' environment variable not set!"
 	fi
@@ -86,9 +83,12 @@ function init {
 
 		# TODO: Check for declared version and if version changes re-install.
 
-		BASE_PATH="$GIT_CACHE_DIR/github.com/cadorn/c9.core"
 		CLONE_URL="git://github.com/cadorn/c9.core.git"
 		COMMIT_REF="536cf9d9f1e699b595dd463a2f631c2807d188d2"
+
+		BO_systemCachePath BASE_PATH \
+			"github.com/cadorn/c9.core" \
+			"0.0.0-$COMMIT_REF"
 
 		if [ ! -e "$BASE_PATH" ]; then
 			if [ ! -e "$(dirname $BASE_PATH)" ]; then
