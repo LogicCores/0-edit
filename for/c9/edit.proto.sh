@@ -86,8 +86,8 @@ function init {
 
 		# TODO: Check for declared version and if version changes re-install.
 
-		BASE_PATH="$GIT_CACHE_DIR/github.com/cadorn/core"
-		CLONE_URL="git://github.com/cadorn/core.git"
+		BASE_PATH="$GIT_CACHE_DIR/github.com/cadorn/c9.core"
+		CLONE_URL="git://github.com/cadorn/c9.core.git"
 		COMMIT_REF="536cf9d9f1e699b595dd463a2f631c2807d188d2"
 
 		if [ ! -e "$BASE_PATH" ]; then
