@@ -120,6 +120,8 @@ function init {
 			# NOTE: All these should be prefixed with "Z0_" so we can easily reset them all.
 			export WORKSPACE_DIR=""
 			export Z0_ROOT=""
+			export Z0_REPOSITORY_URL=""
+			export Z0_REPOSITORY_COMMIT_ISH=""
 			export BOOT_CONFIG_PATH=""
 			export PORT=""
 			export ENVIRONMENT_NAME=""
@@ -129,6 +131,8 @@ function init {
 			export PIO_PROFILE_SEED_PATH=""
 			export PIO_PROFILE_KEY=""
 			export PIO_PROFILE_SECRET=""
+			export BO_SYSTEM_CACHE_DIR=""
+			export BO_GLOBAL_SYSTEM_CACHE_DIR=""
 
 			node server.js --port $EDITOR_PORT -w "$_WS_PATH"
 		popd > /dev/null
